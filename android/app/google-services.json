@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "947490982149",
+    "firebase_url": "https://athenaeum-8845d-default-rtdb.firebaseio.com",
+    "project_id": "athenaeum-8845d",
+    "storage_bucket": "athenaeum-8845d.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:947490982149:android:097983a6d1439d43218f6c",
+        "android_client_info": {
+          "package_name": "com.example.athenaeum_bookstore"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAy93zXhsEmJs0nE-3uWMH1mSPJo25VPWU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
