@@ -22,15 +22,7 @@ class AppTheme {
       ),
     );
 
-    return _common(
-      base,
-      paper,
-      card,
-      ink,
-      muted,
-      line,
-      softAccent,
-    );
+    return _common(base, paper, card, ink, muted, line, softAccent);
   }
 
   static ThemeData dark() {
@@ -52,32 +44,22 @@ class AppTheme {
       ),
     );
 
-    return _common(
-      base,
-      bg,
-      surface,
-      darkText,
-      darkMuted,
-      darkLine,
-      darkSoft,
-    );
+    return _common(base, bg, surface, darkText, darkMuted, darkLine, darkSoft);
   }
 
   static ThemeData _common(
-      ThemeData base,
-      Color background,
-      Color surface,
-      Color text,
-      Color mutedText,
-      Color border,
-      Color soft,
-      ) {
+    ThemeData base,
+    Color background,
+    Color surface,
+    Color text,
+    Color mutedText,
+    Color border,
+    Color soft,
+  ) {
     return base.copyWith(
       scaffoldBackgroundColor: background,
 
-      textTheme: GoogleFonts.interTextTheme(
-        base.textTheme,
-      ).copyWith(
+      textTheme: GoogleFonts.interTextTheme(base.textTheme).copyWith(
         headlineLarge: GoogleFonts.playfairDisplay(
           fontSize: 32,
           fontWeight: FontWeight.w600,
@@ -98,14 +80,8 @@ class AppTheme {
           fontWeight: FontWeight.w600,
           color: text,
         ),
-        bodyLarge: GoogleFonts.inter(
-          fontSize: 15,
-          color: text,
-        ),
-        bodyMedium: GoogleFonts.inter(
-          fontSize: 13,
-          color: text,
-        ),
+        bodyLarge: GoogleFonts.inter(fontSize: 15, color: text),
+        bodyMedium: GoogleFonts.inter(fontSize: 13, color: text),
       ),
 
       appBarTheme: AppBarTheme(
@@ -121,22 +97,15 @@ class AppTheme {
         fillColor: surface,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
-          borderSide: BorderSide(
-            color: border,
-          ),
+          borderSide: BorderSide(color: border),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
-          borderSide: BorderSide(
-            color: border,
-          ),
+          borderSide: BorderSide(color: border),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
-          borderSide: const BorderSide(
-            color: accent,
-            width: 1.3,
-          ),
+          borderSide: const BorderSide(color: accent, width: 1.3),
         ),
         contentPadding: const EdgeInsets.symmetric(
           horizontal: 14,
@@ -149,55 +118,38 @@ class AppTheme {
         elevation: 0,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12),
-          side: BorderSide(
-            color: border,
-          ),
+          side: BorderSide(color: border),
         ),
-        margin: const EdgeInsets.symmetric(
-          vertical: 4,
-        ),
+        margin: const EdgeInsets.symmetric(vertical: 4),
       ),
 
-      dividerTheme: DividerThemeData(
-        color: border,
-      ),
+      dividerTheme: DividerThemeData(color: border),
 
       navigationBarTheme: NavigationBarThemeData(
         backgroundColor: background,
         indicatorColor: soft,
-        labelTextStyle:
-        WidgetStatePropertyAll<TextStyle>(
-          TextStyle(
-            fontSize: 11,
-            color: text,
-          ),
+        labelTextStyle: WidgetStatePropertyAll<TextStyle>(
+          TextStyle(fontSize: 11, color: text),
         ),
       ),
 
       snackBarTheme: SnackBarThemeData(
         behavior: SnackBarBehavior.floating,
         backgroundColor: text,
-        contentTextStyle: TextStyle(
-          color: background,
-        ),
+        contentTextStyle: TextStyle(color: background),
       ),
 
       pageTransitionsTheme: const PageTransitionsTheme(
         builders: {
-          TargetPlatform.android:
-          FadeUpwardsPageTransitionsBuilder(),
+          TargetPlatform.android: FadeUpwardsPageTransitionsBuilder(),
 
-          TargetPlatform.iOS:
-          CupertinoPageTransitionsBuilder(),
+          TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
 
-          TargetPlatform.windows:
-          FadeUpwardsPageTransitionsBuilder(),
+          TargetPlatform.windows: FadeUpwardsPageTransitionsBuilder(),
 
-          TargetPlatform.macOS:
-          FadeUpwardsPageTransitionsBuilder(),
+          TargetPlatform.macOS: FadeUpwardsPageTransitionsBuilder(),
 
-          TargetPlatform.linux:
-          FadeUpwardsPageTransitionsBuilder(),
+          TargetPlatform.linux: FadeUpwardsPageTransitionsBuilder(),
         },
       ),
     );

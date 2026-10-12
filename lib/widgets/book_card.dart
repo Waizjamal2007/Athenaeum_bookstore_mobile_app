@@ -1,8 +1,9 @@
-
 import 'package:flutter/material.dart';
+
 import '../models/book.dart';
 import '../theme/app_theme.dart';
 import 'book_image.dart';
+import 'book_badges.dart';
 
 class BookCard extends StatelessWidget {
   final Book book;
@@ -45,10 +46,7 @@ class BookCard extends StatelessWidget {
                   child: SizedBox(
                     width: compact ? 62 : 78,
                     height: compact ? 88 : 112,
-                    child: BookImage(
-                      source: book.imageUrl,
-                      fit: BoxFit.cover,
-                    ),
+                    child: BookImage(source: book.imageUrl, fit: BoxFit.cover),
                   ),
                 ),
                 const SizedBox(width: 11),
@@ -65,6 +63,10 @@ class BookCard extends StatelessWidget {
                           fontWeight: FontWeight.w700,
                         ),
                       ),
+                      if (book.bestseller || book.newArrival) ...[
+                        const SizedBox(height: 6),
+                        BookBadges(book: book),
+                      ],
                       const SizedBox(height: 5),
                       Text(
                         book.title,

@@ -14,15 +14,13 @@ class ApiService {
   }
 
   static Future<Map<String, dynamic>> post(
-      String action,
-      Map<String, dynamic> data,
-      ) async {
+    String action,
+    Map<String, dynamic> data,
+  ) async {
     final endpoint = Uri.parse('$baseUrl/api/index');
 
     if (endpoint.scheme != 'https' || endpoint.host.isEmpty) {
-      throw StateError(
-        'Set a valid HTTPS Vercel URL in api_service.dart.',
-      );
+      throw StateError('Set a valid HTTPS Vercel URL in api_service.dart.');
     }
 
     final user = FirebaseAuth.instance.currentUser;
@@ -39,16 +37,13 @@ class ApiService {
 
       final response = await http
           .post(
-        endpoint,
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer $token',
-        },
-        body: jsonEncode({
-          'action': action,
-          'data': data,
-        }),
-      )
+            endpoint,
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer $token',
+            },
+            body: jsonEncode({'action': action, 'data': data}),
+          )
           .timeout(const Duration(seconds: 65));
 
       final Map<String, dynamic> body;
@@ -64,8 +59,8 @@ class ApiService {
       } catch (_) {
         throw StateError(
           'Backend returned an invalid response '
-              '(HTTP ${response.statusCode}). '
-              'Check the Vercel URL and Deployment Protection.',
+          '(HTTP ${response.statusCode}). '
+          'Check the Vercel URL and Deployment Protection.',
         );
       }
 
@@ -85,7 +80,7 @@ class ApiService {
     } on TimeoutException {
       throw StateError(
         'Request timed out. Refresh Profile/orders or Admin '
-            'before repeating a change.',
+        'before repeating a change.',
       );
     } on http.ClientException {
       throw StateError(

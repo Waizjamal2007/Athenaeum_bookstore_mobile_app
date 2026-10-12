@@ -5,10 +5,18 @@ class Book {
   final bool bestseller, newArrival;
 
   const Book({
-    required this.id, required this.title, required this.author, required this.genre,
-    required this.description, required this.imageUrl, required this.price,
-    this.rating = 4.5, this.stock = 10, this.year = 2024,
-    this.bestseller = false, this.newArrival = false,
+    required this.id,
+    required this.title,
+    required this.author,
+    required this.genre,
+    required this.description,
+    required this.imageUrl,
+    required this.price,
+    this.rating = 4.5,
+    this.stock = 10,
+    this.year = 2024,
+    this.bestseller = false,
+    this.newArrival = false,
   });
 
   factory Book.fromMap(String id, Map<dynamic, dynamic> m) => Book(
@@ -27,8 +35,16 @@ class Book {
   );
 
   Map<String, dynamic> toMap() => {
-    'title': title, 'author': author, 'genre': genre, 'description': description,
-    'imageUrl': imageUrl, 'price': price, 'rating': rating, 'stock': stock,
-    'year': year, 'bestseller': bestseller, 'newArrival': newArrival,
+    'title': title,
+    'author': author,
+    'genre': genre,
+    'description': description,
+    'imageUrl': imageUrl,
+    'price': price,
+    'rating': rating,
+    'stock': stock,
+    'year': year,
+    'bestseller': bestseller,
+    'newArrival': newArrival,
   };
 }

@@ -1,7 +1,8 @@
-
 import 'dart:convert';
 import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
+
 import '../theme/app_theme.dart';
 
 class BookImage extends StatelessWidget {
@@ -25,8 +26,7 @@ class BookImage extends StatelessWidget {
     if (value.startsWith('data:image/')) {
       try {
         final comma = value.indexOf(',');
-        final Uint8List bytes =
-            base64Decode(value.substring(comma + 1));
+        final Uint8List bytes = base64Decode(value.substring(comma + 1));
         return Image.memory(
           bytes,
           width: width,
@@ -51,14 +51,14 @@ class BookImage extends StatelessWidget {
   }
 
   Widget _fallback() => Container(
-        width: width,
-        height: height,
-        color: AppTheme.softAccent,
-        alignment: Alignment.center,
-        child: const Icon(
-          Icons.menu_book_outlined,
-          size: 30,
-          color: AppTheme.accent,
-        ),
-      );
+    width: width,
+    height: height,
+    color: AppTheme.softAccent,
+    alignment: Alignment.center,
+    child: const Icon(
+      Icons.menu_book_outlined,
+      size: 30,
+      color: AppTheme.accent,
+    ),
+  );
 }

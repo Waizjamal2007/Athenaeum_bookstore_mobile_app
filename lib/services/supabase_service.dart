@@ -1,5 +1,5 @@
-
 import 'dart:typed_data';
+
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class SupabaseService {
@@ -28,20 +28,19 @@ class SupabaseService {
     final contentType = lower.endsWith('.png')
         ? 'image/png'
         : lower.endsWith('.webp')
-            ? 'image/webp'
-            : lower.endsWith('.gif')
-                ? 'image/gif'
-                : 'image/jpeg';
+        ? 'image/webp'
+        : lower.endsWith('.gif')
+        ? 'image/gif'
+        : 'image/jpeg';
 
     try {
-      await client.storage.from('athenaeum_bookstore').uploadBinary(
-        path,
-        bytes,
-        fileOptions: FileOptions(
-          upsert: false,
-          contentType: contentType,
-        ),
-      );
+      await client.storage
+          .from('athenaeum_bookstore')
+          .uploadBinary(
+            path,
+            bytes,
+            fileOptions: FileOptions(upsert: false, contentType: contentType),
+          );
       return client.storage.from('athenaeum_bookstore').getPublicUrl(path);
     } on StorageException catch (e) {
       throw StateError(

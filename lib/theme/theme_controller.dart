@@ -9,9 +9,11 @@ class ThemeController extends ChangeNotifier {
     final controller = ThemeController();
     final prefs = await SharedPreferences.getInstance();
     controller._mode = prefs.getBool('darkTheme') == true
-        ? ThemeMode.dark : ThemeMode.light;
+        ? ThemeMode.dark
+        : ThemeMode.light;
     return controller;
   }
+
   void toggle() => setMode(isDark ? ThemeMode.light : ThemeMode.dark);
   Future<void> setMode(ThemeMode mode) async {
     if (_mode == mode) return;

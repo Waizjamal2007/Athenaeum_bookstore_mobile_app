@@ -1,7 +1,8 @@
 import 'package:firebase_database/firebase_database.dart';
 
 class FirebaseService {
-  static const databaseUrl = 'https://athenaeum-8845d-default-rtdb.firebaseio.com/';
+  static const databaseUrl =
+      'https://athenaeum-8845d-default-rtdb.firebaseio.com/';
   static final db = FirebaseDatabase.instanceFor(
     app: FirebaseDatabase.instance.app,
     databaseURL: databaseUrl,
