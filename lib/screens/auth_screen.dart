@@ -1,7 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:firebase_database/firebase_database.dart';
 
 import '../services/auth_service.dart';
+import '../services/firebase_service.dart';
 import '../widgets/app_shell.dart';
 import '../widgets/motion.dart';
 import '../theme/app_theme.dart';
@@ -21,6 +24,7 @@ class _AuthScreenState extends State<AuthScreen> {
       password = TextEditingController(),
       name = TextEditingController();
   String? error;
+
   @override
   void dispose() {
     email.dispose();
@@ -29,12 +33,66 @@ class _AuthScreenState extends State<AuthScreen> {
     super.dispose();
   }
 
+  // --- GOOGLE SIGN IN / REGISTER FUNCTION ---
+  Future<void> googleSignIn() async {
+    setState(() {
+      loading = true;
+      error = null;
+    });
+    try {
+      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+      if (googleUser == null) {
+        setState(() => loading = false);
+        return; // User canceled
+      }
+
+      final GoogleSignInAuthentication googleAuth =
+      await googleUser.authentication;
+      final credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+
+      UserCredential userCredential =
+      await FirebaseAuth.instance.signInWithCredential(credential);
+
+      // Role refresh aur Realtime Database mein record ensure karna
+      await AuthService.refreshRole(force: true);
+      final user = userCredential.user;
+      if (user != null) {
+        final ref = FirebaseService.users.child(user.uid);
+        if (!(await ref.get()).exists) {
+          await ref.set({
+            'name': user.displayName ?? 'Reader',
+            'email': user.email,
+            'createdAt': ServerValue.timestamp,
+            'shippingAddress': '',
+            'paymentMethod': '',
+          });
+        }
+      }
+
+      if (mounted) {
+        Navigator.pushNamedAndRemoveUntil(
+          context,
+          AuthService.isAdmin ? '/admin' : '/home',
+              (_) => false,
+        );
+      }
+    } catch (e) {
+      if (mounted) setState(() => error = '$e');
+    } finally {
+      if (mounted) setState(() => loading = false);
+    }
+  }
+
   Future<void> submit() async {
     if (email.text.trim().isEmpty ||
         password.text.length < 6 ||
         (!signIn && name.text.trim().isEmpty)) {
       setState(
-        () => error = 'Enter an email, password of at least 6 characters, and your name for registration.',
+            () => error =
+        'Enter an email, password of at least 6 characters, and your name for registration.',
       );
       return;
     }
@@ -48,8 +106,8 @@ class _AuthScreenState extends State<AuthScreen> {
         if (!c.user!.emailVerified && mounted) {
           await c.user!.sendEmailVerification();
           setState(
-            () => error =
-                'Please verify your email. A confirmation link was sent.',
+                () => error =
+            'Please verify your email. A confirmation link was sent.',
           );
           return;
         }
@@ -68,12 +126,13 @@ class _AuthScreenState extends State<AuthScreen> {
         }
         return;
       }
-      if (mounted)
+      if (mounted) {
         Navigator.pushNamedAndRemoveUntil(
           context,
           AuthService.isAdmin ? '/admin' : '/home',
-          (_) => false,
+              (_) => false,
         );
+      }
     } on FirebaseAuthException catch (e) {
       if (mounted) setState(() => error = e.message ?? e.code);
     } catch (e) {
@@ -90,12 +149,13 @@ class _AuthScreenState extends State<AuthScreen> {
     }
     try {
       await AuthService.resetPassword(email.text);
-      if (mounted)
+      if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('Password reset link sent to your email.'),
           ),
         );
+      }
     } on FirebaseAuthException catch (e) {
       if (mounted) setState(() => error = e.message);
     }
@@ -106,7 +166,8 @@ class _AuthScreenState extends State<AuthScreen> {
     bottomNavigationBar: StoreFooter(
       onIndex: (i) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Sign in to explore the bookstore.')),
+          const SnackBar(
+              content: Text('Sign in to explore the bookstore.')),
         );
       },
     ),
@@ -169,28 +230,31 @@ class _AuthScreenState extends State<AuthScreen> {
                 SegmentedButton<bool>(
                   segments: const [
                     ButtonSegment(value: true, label: Text('Sign In')),
-                    ButtonSegment(value: false, label: Text('Create Account')),
+                    ButtonSegment(
+                        value: false, label: Text('Create Account')),
                   ],
                   selected: {signIn},
                   onSelectionChanged: loading
                       ? null
                       : (s) => setState(() {
-                          signIn = s.first;
-                          error = null;
-                        }),
+                    signIn = s.first;
+                    error = null;
+                  }),
                 ),
                 if (!signIn) ...[
                   const SizedBox(height: 18),
                   TextField(
                     controller: name,
-                    decoration: const InputDecoration(labelText: 'Full name'),
+                    decoration:
+                    const InputDecoration(labelText: 'Full name'),
                   ),
                 ],
                 const SizedBox(height: 14),
                 TextField(
                   controller: email,
                   keyboardType: TextInputType.emailAddress,
-                  decoration: const InputDecoration(labelText: 'Email address'),
+                  decoration:
+                  const InputDecoration(labelText: 'Email address'),
                 ),
                 const SizedBox(height: 12),
                 TextField(
@@ -225,50 +289,54 @@ class _AuthScreenState extends State<AuthScreen> {
                         onPressed: loading
                             ? null
                             : () async {
-                                try {
-                                  await AuthService.resendVerification();
-                                  if (mounted)
-                                    setState(
-                                      () => error = 'Verification email sent.',
-                                    );
-                                } catch (e) {
-                                  if (mounted) setState(() => error = '$e');
-                                }
-                              },
+                          try {
+                            await AuthService.resendVerification();
+                            if (mounted) {
+                              setState(
+                                    () => error =
+                                'Verification email sent.',
+                              );
+                            }
+                          } catch (e) {
+                            if (mounted) setState(() => error = '$e');
+                          }
+                        },
                         child: const Text('Resend verification'),
                       ),
                       TextButton(
                         onPressed: loading
                             ? null
                             : () async {
-                                try {
-                                  await AuthService.auth.currentUser!.reload();
-                                  final verified =
-                                      AuthService
-                                          .auth
-                                          .currentUser
-                                          ?.emailVerified ==
-                                      true;
-                                  if (verified) {
-                                    await AuthService.refreshRole(force: true);
-                                    if (mounted)
-                                      Navigator.pushNamedAndRemoveUntil(
-                                        context,
-                                        AuthService.isAdmin
-                                            ? '/admin'
-                                            : '/home',
-                                        (_) => false,
-                                      );
-                                  } else if (mounted) {
-                                    setState(
-                                      () =>
-                                          error = 'Email is not verified yet.',
-                                    );
-                                  }
-                                } catch (e) {
-                                  if (mounted) setState(() => error = '$e');
-                                }
-                              },
+                          try {
+                            await AuthService.auth.currentUser!
+                                .reload();
+                            final verified = AuthService
+                                .auth
+                                .currentUser
+                                ?.emailVerified ==
+                                true;
+                            if (verified) {
+                              await AuthService.refreshRole(
+                                  force: true);
+                              if (mounted) {
+                                Navigator.pushNamedAndRemoveUntil(
+                                  context,
+                                  AuthService.isAdmin
+                                      ? '/admin'
+                                      : '/home',
+                                      (_) => false,
+                                );
+                              }
+                            } else if (mounted) {
+                              setState(
+                                    () => error =
+                                'Email is not verified yet.',
+                              );
+                            }
+                          } catch (e) {
+                            if (mounted) setState(() => error = '$e');
+                          }
+                        },
                         child: const Text('I have verified my email'),
                       ),
                     ],
@@ -278,9 +346,14 @@ class _AuthScreenState extends State<AuthScreen> {
                     padding: const EdgeInsets.only(bottom: 10),
                     child: Text(
                       error!,
-                      style: const TextStyle(color: Colors.red, fontSize: 12),
+                      style:
+                      const TextStyle(color: Colors.red, fontSize: 12),
                     ),
                   ),
+
+                const SizedBox(height: 8),
+
+                // --- EMAIL SIGN IN / CREATE BUTTON ---
                 SizedBox(
                   width: double.infinity,
                   height: 46,
@@ -291,21 +364,41 @@ class _AuthScreenState extends State<AuthScreen> {
                     ),
                     child: loading
                         ? const SizedBox(
-                            width: 18,
-                            height: 18,
-                            child: CircularProgressIndicator(
-                              strokeWidth: 2,
-                              color: Colors.white,
-                            ),
-                          )
+                      width: 18,
+                      height: 18,
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2,
+                        color: Colors.white,
+                      ),
+                    )
                         : Text(
-                            signIn
-                                ? 'Sign In to Account  →'
-                                : 'Create Account  →',
-                          ),
+                      signIn
+                          ? 'Sign In to Account  →'
+                          : 'Create Account  →',
+                    ),
                   ),
                 ),
-                const SizedBox(height: 18),
+
+                const SizedBox(height: 16),
+
+                // --- GOOGLE SIGN IN BUTTON ---
+                SizedBox(
+                  width: double.infinity,
+                  height: 46,
+                  child: OutlinedButton(
+                    onPressed: loading ? null : googleSignIn,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: const [
+                        Icon(Icons.g_mobiledata, size: 28),
+                        SizedBox(width: 8),
+                        Text('Continue with Google'),
+                      ],
+                    ),
+                  ),
+                ),
+
+                const SizedBox(height: 24),
                 const Center(
                   child: Text(
                     'Your next great read starts here',
