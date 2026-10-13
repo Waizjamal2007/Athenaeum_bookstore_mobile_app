@@ -13,7 +13,20 @@
           "package_name": "com.example.athenaeum_bookstore"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "947490982149-1ka0clsbg6rqb90st0i0m90rhf3lnjis.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.athenaeum_bookstore",
+            "certificate_hash": "b749e775f617e3b3860a7d364171a2aa146d1795"
+          }
+        },
+        {
+          "client_id": "947490982149-qc86rqdrrik2oapldhou59bs6fojs8tg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyAy93zXhsEmJs0nE-3uWMH1mSPJo25VPWU"
@@ -21,7 +34,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "947490982149-qc86rqdrrik2oapldhou59bs6fojs8tg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }
