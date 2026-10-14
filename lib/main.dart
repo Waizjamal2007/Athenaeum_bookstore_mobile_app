@@ -2,7 +2,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
-
 import 'services/auth_service.dart';
 import 'services/notification_service.dart';
 import 'widgets/session_guard.dart';
@@ -36,12 +35,12 @@ Future<void> main() async {
     debugPrint("Push initialization: $e");
   }
   runApp(
-    ChangeNotifierProvider.value(value: theme, child: const AthenaeumApp()),
+    ChangeNotifierProvider.value(value: theme, child: const BookstoreApp()),
   );
 }
 
-class AthenaeumApp extends StatelessWidget {
-  const AthenaeumApp({super.key});
+class BookstoreApp extends StatelessWidget {
+  const BookstoreApp({super.key});
 
   Route<dynamic> _route(Widget page) => PageRouteBuilder(
     pageBuilder: (_, animation, secondaryAnimation) => page,
@@ -71,7 +70,7 @@ class AthenaeumApp extends StatelessWidget {
     return Consumer<ThemeController>(
       builder: (_, controller, __) => MaterialApp(
         debugShowCheckedModeBanner: false,
-        title: 'Athenaeum',
+        title: 'Bookstore',
         theme: AppTheme.light(),
         darkTheme: AppTheme.dark(),
         themeMode: controller.mode,
@@ -81,15 +80,15 @@ class AthenaeumApp extends StatelessWidget {
           '/': (_) => const EntryScreen(),
           '/auth': (_) => const AuthScreen(),
           '/home': (_) =>
-              const SessionGuard(child: MainNavigation(initialIndex: 0)),
+          const SessionGuard(child: MainNavigation(initialIndex: 0)),
           '/catalog': (_) =>
-              const SessionGuard(child: MainNavigation(initialIndex: 1)),
+          const SessionGuard(child: MainNavigation(initialIndex: 1)),
           '/search': (_) =>
-              const SessionGuard(child: MainNavigation(initialIndex: 2)),
+          const SessionGuard(child: MainNavigation(initialIndex: 2)),
           '/wishlist': (_) =>
-              const SessionGuard(child: MainNavigation(initialIndex: 3)),
+          const SessionGuard(child: MainNavigation(initialIndex: 3)),
           '/profile': (_) =>
-              const SessionGuard(child: MainNavigation(initialIndex: 4)),
+          const SessionGuard(child: MainNavigation(initialIndex: 4)),
           '/orders': (_) => const SessionGuard(child: OrdersScreen()),
           '/admin/books': (_) => const SessionGuard(
             adminOnly: true,
@@ -105,9 +104,9 @@ class AthenaeumApp extends StatelessWidget {
           ),
           '/cart': (_) => const SessionGuard(child: CartScreen()),
           '/admin': (_) =>
-              const SessionGuard(adminOnly: true, child: AdminScreen()),
+          const SessionGuard(adminOnly: true, child: AdminScreen()),
           '/notifications': (_) =>
-              const SessionGuard(child: NotificationsScreen()),
+          const SessionGuard(child: NotificationsScreen()),
         },
         onGenerateRoute: (settings) {
           if (settings.name == '/details' && settings.arguments is Book) {

@@ -21,10 +21,10 @@ Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 class NotificationService {
   static final navigatorKey = GlobalKey<NavigatorState>();
   static final local = FlutterLocalNotificationsPlugin();
-  static const topic = 'athenaeum_readers'; // Public catalog/news only.
+  static const topic = 'Bookstore_readers'; // Public catalog/news only.
   static const channel = AndroidNotificationChannel(
-    'athenaeum_updates',
-    'Athenaeum updates',
+    'Bookstore_updates',
+    'Bookstore updates',
     description: 'Books, announcements and order updates',
     importance: Importance.high,
   );

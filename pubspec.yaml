@@ -1,5 +1,5 @@
 name: athenaeum_bookstore
-description: Athenaeum Literary Curation & Archival bookstore app.
+description: Bookstore Literary Curation & Archival bookstore app.
 publish_to: "none"
 version: 1.0.0+1
 
@@ -34,10 +34,6 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
-
-  # Uncomment after adding your existing logo.
-  # assets:
-  #   - assets/brand_logo/Brand Logo.png
 
 flutter_launcher_icons:
   android: true

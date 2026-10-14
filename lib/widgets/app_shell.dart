@@ -88,7 +88,7 @@ class AppShell extends StatelessWidget {
   @override
   Widget build(BuildContext context) => StoreScaffold(
     title: const [
-      'Athenaeum',
+      'Bookstore',
       'Book catalog',
       'Search books',
       'Wishlist',

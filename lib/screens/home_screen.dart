@@ -41,7 +41,7 @@ class HomeScreen extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             const Text(
-                              'ATHENAEUM',
+                              'Bookstore',
                               style: TextStyle(
                                 fontSize: 9,
                                 letterSpacing: 2,

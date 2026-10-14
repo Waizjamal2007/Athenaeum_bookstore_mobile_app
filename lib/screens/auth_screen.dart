@@ -172,7 +172,7 @@ class _AuthScreenState extends State<AuthScreen> {
       },
     ),
     appBar: AppBar(
-      title: const Text('Athenaeum'),
+      title: const Text('Bookstore'),
       actions: [
         IconButton(
           tooltip: 'Toggle theme',
@@ -202,7 +202,7 @@ class _AuthScreenState extends State<AuthScreen> {
                   child: Column(
                     children: [
                       Text(
-                        'Athenaeum',
+                        'Bookstore',
                         style: Theme.of(context).textTheme.titleLarge,
                       ),
                       const Text(
